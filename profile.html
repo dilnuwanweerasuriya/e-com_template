@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - ShopEase</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for active navigation link */
+        .nav-link.active {
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #4f46e5; /* indigo-600 */
+            font-weight: 500;
+        }
+        /* Optional: Add transitions for smoother menu opening/closing */
+        .mobile-menu {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        /* Ensure the mobile menu itself doesn't block scrolling on the body when open */
+        body.overflow-hidden {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Left side: Logo and Desktop Nav -->
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600">ShopEase</a>
+                    <div class="hidden md:flex ml-10 space-x-8">
+                        <a href="index.html" class="text-gray-700 hover:text-indigo-600 transition duration-150 ease-in-out">Home</a>
+                        <a href="shop.html" class="text-gray-700 hover:text-indigo-600 transition duration-150 ease-in-out">Products</a>
+                        <a href="about.html" class="text-gray-700 hover:text-indigo-600 transition duration-150 ease-in-out">About</a>
+                        <a href="contact.html" class="text-gray-700 hover:text-indigo-600 transition duration-150 ease-in-out">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Right side: Mobile Toggle, Search, Cart, Login/Signup -->
+                <div class="flex items-center space-x-4">
+                    <!-- Hamburger Button (Visible only on mobile) -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <!-- Hamburger Icon -->
+                            <svg id="hamburger-icon" class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                             <!-- Close Icon (initially hidden) -->
+                            <svg id="close-icon" class="hidden h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Desktop Search Bar -->
+                    <div class="hidden md:flex">
+                        <input type="text" placeholder="Search products..." class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg hover:bg-indigo-700 transition duration-150 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Cart Icon -->
+                    <a href="cart.html" class="relative transition duration-150 ease-in-out hover:text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </a>
+
+                    <!-- Login/Signup Links (Visible only on desktop) -->
+                    <div class="hidden md:flex items-center gap-3">
+                        <a href="login.html" class="text-gray-700 hover:text-indigo-600 transition duration-150 ease-in-out">Login</a>
+                        <a href="signup.html" class="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out">Sign up</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Content -->
+            <div id="mobile-menu" class="hidden md:hidden flex flex-col items-center py-4 space-y-4 border-t mt-3">
+                <!-- Mobile Search Bar -->
+                <div class="w-full px-2">
+                    <input type="text" placeholder="Search products..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <!-- Mobile Nav Links -->
+                <a href="index.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 rounded-md transition duration-150 ease-in-out">Home</a>
+                <a href="shop.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 rounded-md transition duration-150 ease-in-out">Products</a>
+                <a href="about.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 rounded-md transition duration-150 ease-in-out">About</a>
+                <a href="contact.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600 rounded-md transition duration-150 ease-in-out">Contact</a>
+
+                <!-- Mobile Login/Signup Buttons -->
+                <a href="login.html" class="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100 rounded-md transition duration-150 ease-in-out">Login</a>
+                <a href="signup.html" class="block w-full px-4 py-2 text-center bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out">Sign up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Account Page Content -->
+    <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
+
+        <!-- Sidebar Navigation -->
+        <aside class="md:w-1/4 bg-gray-50 p-4 rounded-lg shadow-sm h-fit">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Account</h3>
+            <nav class="flex flex-col space-y-2">
+                <!-- Use href="#sectionId" to link to sections within the page -->
+                <!-- Add 'active' class to the currently viewed section link -->
+                <a href="#profile" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out active">Profile Information</a>
+                <a href="#orders" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out">Order History</a>
+                <a href="#addresses" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out">Addresses</a>
+                <a href="#payment" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out">Payment Methods</a>
+                <a href="#password" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out">Change Password</a>
+                <a href="#settings" class="nav-link block px-3 py-2 rounded-md text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition duration-150 ease-in-out">Account Settings</a>
+                <button class="nav-link block w-full px-3 py-2 text-left rounded-md text-red-600 hover:bg-red-100 hover:text-red-700 transition duration-150 ease-in-out mt-4">Logout</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="md:w-3/4 bg-white p-6 rounded-lg shadow-md">
+            <!-- Profile Information Section -->
+            <section id="profile" class="mb-8">
+                <h2 class="text-2xl font-bold mb-5 text-gray-800">Profile Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                        <input type="text" id="firstName" name="firstName" value="John" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" value="Doe" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" name="email" value="john.doe@example.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                         <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" value="johndoe123" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save Profile</button>
+                </div>
+            </section>
+
+            <hr class="my-8 border-gray-200">
+
+            <!-- Order History Section (Placeholder) -->
+            <section id="orders" class="mb-8">
+                <h2 class="text-2xl font-bold mb-5 text-gray-800">Order History</h2>
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <p class="text-gray-600">You haven't placed any orders yet.</p>
+                    <a href="shop.html" class="mt-3 inline-block px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-150 ease-in-out">Start Shopping</a>
+                </div>
+                <!-- Example of a past order row structure (uncomment and adapt as needed) -->
+                <!--
+                <div class="border-b border-gray-200 py-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-medium text-gray-800">Order #12345</p>
+                            <p class="text-sm text-gray-500">Placed on Jan 15, 2024</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">$99.99</p>
+                            <a href="#" class="text-sm text-indigo-600 hover:underline">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </section>
+
+             <hr class="my-8 border-gray-200">
+
+            <!-- Addresses Section (Placeholder) -->
+            <section id="addresses" class="mb-8">
+                <h2 class="text-2xl font-bold mb-5 text-gray-800">My Addresses</h2>
+                <div class="space-y-4">
+                    <!-- Default Shipping Address -->
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-lg font-semibold text-gray-800">Default Shipping Address</h4>
+                            <button class="text-sm text-indigo-600 hover:underline">Edit</button>
+                        </div>
+                        <p class="text-gray-700">John Doe</p>
+                        <p class="text-gray-700">123 Main Street</p>
+                        <p class="text-gray-700">Anytown, CA 91234</p>
+                        <p class="text-gray-700">United States</p>
+                    </div>
+                    <!-- Billing Address -->
+                     <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-lg font-semibold text-gray-800">Billing Address</h4>
+                            <button class="text-sm text-indigo-600 hover:underline">Edit</button>
+                        </div>
+                        <p class="text-gray-700">John Doe</p>
+                        <p class="text-gray-700">123 Main Street</p>
+                        <p class="text-gray-700">Anytown, CA 91234</p>
+                        <p class="text-gray-700">United States</p>
+                    </div>
+                </div>
+                <div class="mt-5">
+                     <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add New Address</button>
+                </div>
+            </section>
+
+            <hr class="my-8 border-gray-200">
+
+            <!-- Payment Methods Section (Placeholder) -->
+            <section id="payment" class="mb-8">
+                <h2 class="text-2xl font-bold mb-5 text-gray-800">Payment Methods</h2>
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <p class="text-gray-600">No payment methods saved yet.</p>
+                    <button class="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add Payment Method</button>
+                </div>
+            </section>
+
+            <hr class="my-8 border-gray-200">
+
+            <!-- Change Password Section (Placeholder) -->
+            <section id="password" class="mb-8">
+                 <h2 class="text-2xl font-bold mb-5 text-gray-800">Change Password</h2>
+                 <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+                        <input type="password" id="currentPassword" name="currentPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                 </div>
+                 <div class="mt-6">
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Update Password</button>
+                 </div>
+            </section>
+
+            <hr class="my-8 border-gray-200">
+
+            <!-- Account Settings Section (Placeholder) -->
+             <section id="settings" class="mb-8">
+                 <h2 class="text-2xl font-bold mb-5 text-gray-800">Account Settings</h2>
+                 <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg shadow-inner">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800">Email Notifications</h4>
+                            <p class="text-sm text-gray-500">Receive updates about your orders and promotions.</p>
+                        </div>
+                        <!-- Toggle Switch -->
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg shadow-inner">
+                         <div>
+                            <h4 class="text-lg font-semibold text-gray-800">Two-Factor Authentication</h4>
+                            <p class="text-sm text-gray-500">Add an extra layer of security to your account.</p>
+                        </div>
+                        <button class="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Setup 2FA</button>
+                    </div>
+                 </div>
+             </section>
+
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            &copy; 2024 ShopEase. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Toggle Script (from previous example) -->
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const body = document.body;
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+
+            // Toggle aria-expanded attribute for accessibility
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+
+            // Toggle the mobile menu's visibility (using classes)
+            mobileMenu.classList.toggle('hidden');
+            // The 'flex' class is implicitly handled by Tailwind's 'hidden' toggle,
+            // but you could explicitly toggle it if needed.
+
+            // Toggle icons
+            hamburgerIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+
+            // Optional: Prevent body scrolling when menu is open
+            if (!isExpanded) {
+                body.classList.add('overflow-hidden'); // Add class to prevent scroll
+            } else {
+                body.classList.remove('overflow-hidden'); // Remove class to allow scroll
+            }
+        });
+
+        // Optional: Close the menu if a link inside it is clicked
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // Check if the menu is currently open before closing
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenuButton.click(); // Simulate a click to close the menu
+                }
+            });
+        });
+
+        // Optional: Basic handling to simulate active link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                // Prevent default if it's an anchor link that scrolls
+                // if (link.hash && event.target === link) {
+                //     event.preventDefault();
+                // }
+
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // If it's the logout button, maybe prevent adding 'active'
+                if (link.tagName === 'BUTTON') {
+                    link.classList.remove('active');
+                }
+            });
+        });
+
+        // Manually activate the first link on page load for demonstration
+        document.querySelector('.nav-link.active')?.classList.add('active');
+
+    </script>
+
+</body>
+</html>
